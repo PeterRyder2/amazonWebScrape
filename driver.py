@@ -1,7 +1,31 @@
 #%%
+# 
 import pandas as pd
 import datetime as datetime
 import os
+import selenium 
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support.ui import Select
+import time 
+import selenium
+from selenium import webdriver
+import pprint
+
+
+def GetDatafromWebsite(url, xpath):
+    chromedriver = r"ChromeDriver\chromedriver.exe"
+    
+    driver = webdriver.Chrome(executable_path=chromedriver)
+    driver.get(url)
+    time.sleep(5)
+
+
+    
+    price = driver.find_element_by_xpath(xpath)
+    
+    print(price.text)
+    #driver.quit()
+    return price.text
 
 
 def CheckBookPrice(pricePoint = None):
@@ -26,12 +50,26 @@ def CheckBookPrice(pricePoint = None):
     return None
 
 
-pricePoint =  50.40
-bookCheck = CheckBookPrice(pricePoint=pricePoint)
-if bookCheck == None:
-    print("no books of interest")
-else:
-    print(f" There is a book of interest \n\n\n {bookCheck}")
-exit()
 
- # %%
+
+
+path = r'excels\books.xlsx'
+
+df = pd.read_excel(path)
+dict1 = {}
+for index,row in df.iterrows():
+    print(row)
+    url = row["url"]
+    xpath =row["xpath"]
+    returnedValue  = GetDatafromWebsite(url, xpath)
+    print(returnedValue)
+
+    dict1[url] = returnedValue
+
+
+    pprint.pprint(dict1)
+    
+
+
+
+
