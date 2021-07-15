@@ -68,8 +68,19 @@ for index,row in df.iterrows():
 
 
     pprint.pprint(dict1)
-    
 
+# dict1 = {'https://www.amazon.com/Learning-Python-5th-Mark-Lutz/dp/1449355730/ref=sr_1_2?dchild=1&keywords=python+books&qid=1624533099&sr=8-2': '$33.86',
+#  'https://www.amazon.com/Python-Crash-Course-2nd-Edition/dp/1593279280/ref=sr_1_1?dchild=1&keywords=python+books&qid=1624532815&sr=8-1': '$21.00'}
+
+now = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")
+df[now] = ""
+for count, i in enumerate(dict1):
+    df.loc[df['url'] == i, [now]] = str(dict1[i]).replace("$", "")
+
+Newpath = os.path.join(r"C:\Users\ryderp\Documents\projects\amazonWebScrape\excels", f"books_{now}.xlsx")
+print(df)
+df.to_excel(Newpath, index=False)
+    
 
 
 
