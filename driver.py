@@ -28,31 +28,45 @@ def GetDatafromWebsite(url, xpath):
     return price.text
 
 
-def CheckBookPrice(pricePoint = None):
-    now = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")
+def CheckBookPrice(df, pricePoint = None):
+    '''
+
+    -open the excel in pandas 
+    -iterate through the rows one by one
+    - compare todays price with yesterdays
+    - if there is price change
+            do something interesting 
+        else:
+            do nothing 
+    '''
+    for i in df.itterrows():
+        pass
+
+
+    # now = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")
     
-    excelpath = r"C:\Users\ryderp\Documents\projects\amazonWebScrape\excels"
-    path = r"C:\Users\ryderp\Documents\projects\amazonWebScrape\excels\books.xlsx"
-    df = pd.read_excel(path)
-    df["checked"] = None
+    # excelpath = r"C:\Users\ryderp\Documents\projects\amazonWebScrape\excels"
+    # path = r"C:\Users\ryderp\Documents\projects\amazonWebScrape\excels\books.xlsx"
+    # df = pd.read_excel(path)
+    # df["checked"] = None
     
-    for index,row in df.iterrows():
-        print(f"Current price is {row['price_USD']}")
-        if row["price_USD"] < pricePoint:
-            print(f"Price is below price point \n\n {row}")
-            df.loc[index, 'checked']  = pricePoint + row["price_USD"]
-            newFileName = f"new_book_{now}.xlsx"
+    # for index,row in df.iterrows():
+    #     print(f"Current price is {row['price_USD']}")
+    #     if row["price_USD"] < pricePoint:
+    #         print(f"Price is below price point \n\n {row}")
+    #         df.loc[index, 'checked']  = pricePoint + row["price_USD"]
+    #         newFileName = f"new_book_{now}.xlsx"
 
-            neFilePath = os.path.join(excelpath,newFileName )
-            df.to_excel(neFilePath, index = False )
+    #         neFilePath = os.path.join(excelpath,newFileName )
+    #         df.to_excel(neFilePath, index = False )
 
-            return row.to_dict() 
-    return None
-
-
+    #         return row.to_dict() 
+    # return None
 
 
 
+
+#driver
 path = r'excels\books.xlsx'
 
 df = pd.read_excel(path)
@@ -69,8 +83,6 @@ for index,row in df.iterrows():
 
     pprint.pprint(dict1)
 
-# dict1 = {'https://www.amazon.com/Learning-Python-5th-Mark-Lutz/dp/1449355730/ref=sr_1_2?dchild=1&keywords=python+books&qid=1624533099&sr=8-2': '$33.86',
-#  'https://www.amazon.com/Python-Crash-Course-2nd-Edition/dp/1593279280/ref=sr_1_1?dchild=1&keywords=python+books&qid=1624532815&sr=8-1': '$21.00'}
 
 now = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")
 df[now] = ""
@@ -78,6 +90,7 @@ for count, i in enumerate(dict1):
     df.loc[df['url'] == i, [now]] = str(dict1[i]).replace("$", "")
 
 Newpath = os.path.join(r"C:\Users\ryderp\Documents\projects\amazonWebScrape\excels", f"books_{now}.xlsx")
+
 print(df)
 df.to_excel(Newpath, index=False)
     
